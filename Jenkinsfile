@@ -12,7 +12,7 @@ pipeline {
         AWS_ACCOUNT_ID = "123456789012"
         AWS_REGION     = "us-east-1"
         ECR_REPO       = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${APP_NAME}"
-        DOCKERHUB_REPO = "ebonje/${APP_NAME}"
+        DOCKERHUB_REPO = "jonathan661/${APP_NAME}"
         SCANNER_HOME   = tool 'sonar-scanner'
         
         // Credentials IDs from Jenkins
