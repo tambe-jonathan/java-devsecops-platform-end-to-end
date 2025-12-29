@@ -1,0 +1,47 @@
+# DevOps Taskmaster - Deployment Manifest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-taskmaster
+  namespace: webapp
+  labels:
+    app: devops-taskmaster
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devops-taskmaster
+  template:
+    metadata:
+      labels:
+        app: devops-taskmaster
+    spec:
+      containers:
+      - name: devops-taskmaster
+        # This matches the ECR/DockerHub repository you configured
+        image: tambe-jonathan/devops-taskmaster:latest 
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-taskmaster-service
+  namespace: webapp
+spec:
+  type: NodePort
+  selector:
+    app: devops-taskmaster
+  ports:
+    - protocol: TCP
+      port: 80          
+      targetPort: 8080
+      nodePort: 30001   
