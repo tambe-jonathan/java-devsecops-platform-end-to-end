@@ -11,8 +11,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.1</version>
     </parent>
+
+    <properties>
+        <java.version>17</java.version>
+        <tomcat.version>10.1.35</tomcat.version>
+        <logback.version>1.5.13</logback.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -27,7 +33,8 @@
 
     <distributionManagement>
         <repository>
-            <id>nexus-repo</id> <url>http://your-nexus-ip:8081/repository/maven-releases/</url>
+            <id>nexus-repo</id> 
+            <url>http://your-nexus-ip:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-repo</id>
