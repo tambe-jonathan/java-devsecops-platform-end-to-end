@@ -131,7 +131,7 @@ pipeline {
             steps {
                 withKubeConfig(
                     credentialsId: "${K8S_CREDS}",
-                    serverUrl: 'https://172.31.15.201:6443'
+                    serverUrl: 'https://54.164.161.45'
                 ) {
                     // Ensure namespace exists (idempotent)
                     sh "kubectl get ns webapp >/dev/null 2>&1 || kubectl create ns webapp"
