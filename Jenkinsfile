@@ -11,7 +11,7 @@ pipeline {
         APP_NAME       = "devops-taskmaster"
         AWS_ACCOUNT_ID = "123456789012"
         AWS_REGION     = "us-east-1"
-        ECR_REPO       = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${APP_NAME}"
+        ECR_REPO       = "${891377318635}.dkr.ecr.${us-east-1}.amazonaws.com/${devops-taskmaster}"
         DOCKERHUB_REPO = "jonathan661/${APP_NAME}"
         SCANNER_HOME   = tool 'sonar-scanner'
 
