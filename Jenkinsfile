@@ -17,7 +17,7 @@ pipeline {
 
         // Jenkins Credentials IDs
         SONAR_TOKEN_ID = 'sonar-token'
-        DOCKER_CREDS   = 'docker-cred'
+        DOCKER_CREDS   = 'dockerhub-creds'
         AWS_CREDS      = 'aws-ecr-creds'
         GIT_CREDS      = 'git-cred'
         K8S_CREDS      = 'k8-cred'
