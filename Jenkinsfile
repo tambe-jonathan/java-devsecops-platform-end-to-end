@@ -56,9 +56,10 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                     sh """
                       ${SCANNER_HOME}/bin/sonar-scanner \
-                      -Dsonar.projectName=${APP_NAME} \
-                      -Dsonar.projectKey=${APP_NAME} \
-                      -Dsonar.java.binaries=.
+                      -Dsonar.projectName=devops-taskmaster \
+                      -Dsonar.projectKey=devops-taskmaster \
+                      -Dsonar.sources=app/src/main/java \
+                      -Dsonar.java.binaries=app/target/classes'
                     """
                 }
             }
