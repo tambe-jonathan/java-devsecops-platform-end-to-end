@@ -24,7 +24,7 @@ pipeline {
         // Jenkins Credentials
         AWS_CREDS    = "aws-ecr-creds"
         DOCKER_CREDS = "dockerhub-creds"
-        GIT_CREDS    = "git-cred"
+        GIT_CREDS    = "github-creds"
         K8S_CREDS   = "k8-cred"
     }
 
