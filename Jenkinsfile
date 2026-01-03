@@ -59,7 +59,7 @@ pipeline {
                       -Dsonar.projectName=devops-taskmaster \
                       -Dsonar.projectKey=devops-taskmaster \
                       -Dsonar.sources=app/src/main/java \
-                      -Dsonar.java.binaries=app/target/classes'
+                      -Dsonar.java.binaries=app/target/classes
                     """
                 }
             }
