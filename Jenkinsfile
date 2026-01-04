@@ -144,7 +144,7 @@ pipeline {
                       kubectl get nodes
                       kubectl get ns webapp >/dev/null 2>&1 || kubectl create ns webapp
 
-                      kubectl apply -f deployment.yaml
+                      kubectl apply -f infra/deployment.yaml
                       kubectl rollout restart deployment devops-taskmaster -n webapp
                       kubectl get pods -n webapp
                     '''
