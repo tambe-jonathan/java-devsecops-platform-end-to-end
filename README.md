@@ -111,7 +111,23 @@ users:
   user:
     token: <YOUR-AUTH-TOKEN>
 ```
+## 📂 Project Structure
 
+```text
+devops-taskmaster/
+├── .github/                # GitHub Actions for local testing
+├── .jenkins/               # Enterprise Jenkins Shared Libraries
+├── k8s/                    # Kubernetes Manifests (The "Source of Truth")
+│   ├── deployment.yaml     # High-Availability Deployment config
+│   └── service.yaml        # LoadBalancer/NodePort service
+├── src/                    # Java Source Code
+│   ├── main/java/...       # Spring Boot Logic
+│   └── main/resources/     # UI Templates (Thymeleaf)
+├── Dockerfile              # Multi-stage optimized build
+├── Jenkinsfile             # CI/CD Orchestration script
+├── pom.xml                 # Maven Dependencies
+├── sonar-project.properties # SonarQube configurations
+└── README.md               # Project Documentation
 
 ---
 
