@@ -113,6 +113,20 @@ The Jenkins user must have permissions to execute the following tools. Run these
 * **Docker:** `sudo usermod -aG docker jenkins`
 * **kubectl:** Installed and configured for cluster communication.
 * **Trivy:** Latest version installed for vulnerability scanning.
+
+##  Jenkins Credential Configuration
+
+Configure the following IDs exactly as listed in **Manage Jenkins > Credentials** to ensure pipeline compatibility:
+
+| Credential ID | Type | Description |
+| :--- | :--- | :--- |
+| `github-creds` | Username/Password | GitHub credentials or Personal Access Token (PAT). |
+| `docker-cred` | Username/Password | Docker Hub credentials (**User: jonathan661**). |
+| `sonar-token` | Secret Text | Auth token generated in SonarQube settings. |
+| `k8-cred` | Secret File | A clean `kubeconfig` file (see setup below). |
+> **Note:** Ensure it contains `insecure-skip-tls-verify: true` and the **Public IP** of your cluster.
+
+
 ---
 
 #  Project Structure
@@ -138,17 +152,6 @@ The Jenkins user must have permissions to execute the following tools. Run these
 ├── sonar-project.properties  # SonarQube configurations
 └── README.md                # Project Documentation
 ```
-
-##  Jenkins Credential Configuration
-
-Configure the following IDs exactly as listed in **Manage Jenkins > Credentials** to ensure pipeline compatibility:
-
-| Credential ID | Type | Description |
-| :--- | :--- | :--- |
-| `github-creds` | Username/Password | GitHub credentials or Personal Access Token (PAT). |
-| `docker-cred` | Username/Password | Docker Hub credentials (**User: jonathan661**). |
-| `sonar-token` | Secret Text | Auth token generated in SonarQube settings. |
-| `k8-cred` | Secret File | A clean `kubeconfig` file (see setup below). |
 
 ---
 
@@ -181,48 +184,7 @@ users:
     token: <YOUR-AUTH-TOKEN>
 ```
 
-
 ---
-
-##  Pipeline Executions
-
-### Stage 1: Continuous Security (Trivy & SonarQube)
-The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities during the Image Scan phase.
-> *[Place Image of Trivy Scan Output here]*
-> *[Place Image of SonarQube Dashboard/Quality Gate here]*
-
-### Stage 2: Artifact & Image Distribution
-Immutable tags are pushed simultaneously to AWS and DockerHub for redundancy.
-> *[Place Image of DockerHub Repository showing Latest & Build Number tags here]*
-> *[Place Image of AWS ECR Console here]*
-
-### Stage 3: Kubernetes Deployment
-The deployment utilizes a `rollout restart` strategy to ensure zero-downtime updates.
-> *[Place Image of "kubectl get pods -n webapp" showing 3/3 Running here]*
-
-### Stage 1: Continuous Security (Trivy & SonarQube)
-The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities during the Image Scan phase.
-> *[Place Image of Trivy Scan Output here]*
-> *[Place Image of SonarQube Dashboard/Quality Gate here]*
-
-### Stage 2: Artifact & Image Distribution
-Immutable tags are pushed simultaneously to AWS and DockerHub for redundancy.
-> *[Place Image of DockerHub Repository showing Latest & Build Number tags here]*
-> *[Place Image of AWS ECR Console here]*
-
-### Stage 3: Kubernetes Deployment
-The deployment utilizes a `rollout restart` strategy to ensure zero-downtime updates.
-> *[Place Image of "kubectl get pods -n webapp" showing 3/3 Running here]*
-
----
-
-## 🖥 Live Application Demo
-Upon successful deployment, the application is exposed via a **NodePort Service (30001)**.
-
-![Application Demo GIF](https://via.placeholder.com/800x400?text=Insert+Your+Application+Running+GIF+Here)
-
----
-
 ## Deployment Guide
 
 Follow these steps to replicate this enterprise DevSecOps deployment on your own infrastructure.
