@@ -45,11 +45,50 @@ The platform orchestrates a multi-stage lifecycle across distributed infrastruct
 | **Infrastructure** | Kubernetes (MicroK8s), AWS EC2 |
 
 ---
-# CI/CD Pipeline Infrastructure & Configuration
-
-This repository contains the configuration and pipeline scripts for a robust CI/CD workflow utilizing Jenkins, SonarQube, and Kubernetes (MicroK8s).
+## 🏗️ Pipeline Architecture & Evidence
+The platform orchestrates a multi-stage lifecycle across distributed infrastructure.# 🏛️ Enterprise TaskMaster Platform
+<p align="center">
+  <img src="./docs/assets/app-demo.gif" width="700" alt="Live Application Demo">
+  <br>
+  <strong>Status:</strong> <code>Production-Ready</code> | <strong>Traffic:</strong> <code>Live on Port 80</code>
+</p>
 
 ---
+
+### 1. Continuous Integration & Security (Sonar & Trivy)
+The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities.
+
+| SonarQube Quality Gate | Trivy Security Scan |
+| :---: | :---: |
+| <img src="./docs/assets/sonarqube-report.png" width="380"> | <img src="./docs/assets/trivy-scan.png" width="380"> |
+| *Deep Code Inspection* | *Container Vulnerability Report* |
+
+### 2. Artifact Governance & Distribution
+We implement a multi-registry strategy to ensure artifact provenance and redundancy.
+
+<details>
+  <summary>📦 <b>Click to view Registry & Storage Evidence (Nexus/ECR/DockerHub)</b></summary>
+
+  #### **Sonatype Nexus (Binary Storage)**
+  > Provenance of the compiled `.jar` artifact.
+  ![Nexus Artifact](./docs/assets/nexus-artifact.png)
+
+  #### **AWS ECR & DockerHub (Container Registries)**
+  > Immutable image distribution across cloud and public registries.
+  ![ECR Registry](./docs/assets/ecr-image.png)
+  ![DockerHub Registry](./docs/assets/dockerhub-image.png)
+</details>
+
+### 3. Orchestration & Deployment (Jenkins & K8s)
+The final stage performs a rolling update to the cluster, verified by runtime logs.
+
+| Jenkins Pipeline Run | Kubernetes Cluster State |
+| :---: | :---: |
+| <img src="./docs/assets/jenkins-run.png" width="380"> | <img src="./docs/assets/kubectl-output.png" width="380"> |
+| *100% Success Rate* | *`kubectl get pods` - Healthy/Running* |
+
+---
+
 
 ##  Prerequisites & Infrastructure
 
@@ -63,6 +102,7 @@ Ensure the following ports are open in your AWS Security Group to allow traffic:
 | Port | Service | Purpose |
 | :--- | :--- | :--- |
 | **8080** | Jenkins | Web UI Access |
+| **8081** | Sonatype Nexus | Artifactory Storage |
 | **9000** | SonarQube | Code Quality Dashboard |
 | **16443** | Kubernetes | API Server (Remote Access) |
 | **30001** | Application | Frontend/App Access via NodePort |
@@ -145,6 +185,20 @@ users:
 ---
 
 ##  Pipeline Executions
+
+### Stage 1: Continuous Security (Trivy & SonarQube)
+The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities during the Image Scan phase.
+> *[Place Image of Trivy Scan Output here]*
+> *[Place Image of SonarQube Dashboard/Quality Gate here]*
+
+### Stage 2: Artifact & Image Distribution
+Immutable tags are pushed simultaneously to AWS and DockerHub for redundancy.
+> *[Place Image of DockerHub Repository showing Latest & Build Number tags here]*
+> *[Place Image of AWS ECR Console here]*
+
+### Stage 3: Kubernetes Deployment
+The deployment utilizes a `rollout restart` strategy to ensure zero-downtime updates.
+> *[Place Image of "kubectl get pods -n webapp" showing 3/3 Running here]*
 
 ### Stage 1: Continuous Security (Trivy & SonarQube)
 The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities during the Image Scan phase.
