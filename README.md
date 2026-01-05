@@ -20,10 +20,9 @@ The platform orchestrates a multi-stage lifecycle across distributed infrastruct
 6.  **Continuous Deployment:** Automated Rolling Update on MicroK8s (AWS-backed).
 
 
-
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 | Domain | Technology |
 | :--- | :--- |
 | **Orchestration** | Jenkins (Declarative Pipeline) |
@@ -43,7 +42,7 @@ This repository contains the configuration and pipeline scripts for a robust CI/
 
 ---
 
-## 🏗️ Prerequisites & Infrastructure
+##  Prerequisites & Infrastructure
 
 ### 1. Server Configuration (AWS EC2 / Ubuntu)
 * **Jenkins Server:** Minimum **4GB RAM** (Instance type `t3.medium` recommended).
@@ -65,6 +64,9 @@ The Jenkins user must have permissions to execute the following tools. Run these
 * **Docker:** `sudo usermod -aG docker jenkins`
 * **kubectl:** Installed and configured for cluster communication.
 * **Trivy:** Latest version installed for vulnerability scanning.
+
+### 4. Repo Structure
+
 
 ---
 
@@ -108,24 +110,8 @@ users:
 - name: admin
   user:
     token: <YOUR-AUTH-TOKEN>
+```
 
-## 🔐 Enterprise Prerequisites & Configuration
-To ensure pipeline stability, the following configurations are strictly required:
-
-### 1. Global Tool Configurations (Jenkins)
-Ensure the following tools are defined in **Manage Jenkins > Global Tool Configuration**:
-* **JDK:** Name: `jdk17`
-* **Maven:** Name: `maven3`
-* **Sonar Scanner:** Name: `sonar-scanner`
-
-### 2. Required Jenkins Credentials
-| ID | Type | Role |
-| :--- | :--- | :--- |
-| `github-creds` | Username/Password | Git checkout authentication |
-| `aws-ecr-creds` | AWS Credentials | ECR Image push/pull |
-| `dockerhub-creds` | Username/Password | DockerHub Image synchronization |
-| `k8-cred` | **Secret File** | Clean YAML `kubeconfig` with TLS-bypass |
-| `global-settings` | Managed File | Maven `settings.xml` for Nexus authentication |
 
 ---
 
@@ -168,3 +154,66 @@ kubectl logs -f -l app=devops-taskmaster -n webapp
 
 # To verify Service exposure
 kubectl get svc -n webapp
+```
+## 🚀 Deployment Guide
+
+Follow these steps to replicate this enterprise DevSecOps deployment on your own infrastructure.
+
+---
+
+### I. Infrastructure Requirements
+
+* **Host OS:** Ubuntu 22.04 LTS (AWS EC2 or local VM).
+* **K8s Distribution:** MicroK8s (Required addons: `dns`, `dashboard`, `storage`).
+* **Networking:** Ensure your Cloud Security Group allows the following inbound traffic:
+
+| Port | Service | Description |
+| :--- | :--- | :--- |
+| **16443** | Kubernetes API | Remote cluster management |
+| **30001** | Application | External access to the deployed app |
+| **8080** | Jenkins | Automation server UI |
+| **9000** | SonarQube | Code quality analysis UI |
+
+---
+
+### II. Jenkins Credential Setup
+
+To match the environment defined in the `Jenkinsfile`, you **must** configure these credentials in Jenkins:
+
+1.  **`k8-cred`** (Secret File): Your `kubeconfig` file. 
+    > **Note:** Ensure it contains `insecure-skip-tls-verify: true` and the **Public IP** of your cluster.
+2.  **`dockerhub-creds`** (Username/Password): Your Docker Hub login details.
+3.  **`github-creds`** (Username/Password): Your GitHub username and Personal Access Token (PAT).
+4.  **`aws-ecr-creds`** (AWS Credentials): Your IAM Access Key and Secret Key for ECR registry access.
+
+---
+
+### III. Deployment Steps
+
+#### 1. Clone the Repository
+```bash
+git clone [https://github.com/tambe-jonathan/java-devsecops-platform-end-to-end.git](https://github.com/tambe-jonathan/java-devsecops-platform-end-to-end.git)
+cd java-devsecops-platform-end-to-end
+```
+### 2. Apply Manifests Manually (Optional Testing)
+Before running the pipeline, you can verify your cluster connection:
+
+Bash
+```
+kubectl apply -f infra/deployment.yaml
+```
+### 3. Execute the Pipeline
+Create a new Pipeline job in Jenkins.
+
+Point the Pipeline Script from SCM to this repository.
+
+Click Build Now.
+
+The pipeline will build the .jar, scan code quality/vulnerabilities, push the image, and perform a rollout restart on the cluster.
+
+IV. Accessing the Application
+Once the Jenkins pipeline shows a SUCCESS status, you can access your live application at:
+
+http://<YOUR_PUBLIC_IP>:30001
+
+[!TIP] Use kubectl get pods to verify that the application instances are running and healthy after the pipeline completes.
