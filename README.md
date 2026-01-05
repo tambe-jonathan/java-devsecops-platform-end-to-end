@@ -4,6 +4,7 @@
 [![Security: Trivy](https://img.shields.io/badge/Security-Trivy_Enabled-green?style=for-the-badge&logo=trivy)](https://aquasecurity.github.io/trivy/)
 [![Code Quality: SonarQube](https://img.shields.io/badge/Quality-SonarQube_Passed-brightgreen?style=for-the-badge&logo=sonarqube)](https://sonarqube.org)
 
+# Overview
 Enterprise-grade DevSecOps Lifecycle for a Java Microservice. Features a hardened CI/CD pipeline (Jenkins, SonarQube, Trivy), Artifact Management (Artifactory, ECR), and a high-availability deployment to Kubeadm/AWS EKS Cluster with GitOps (ArgoCD), Observability (Prometheus/Grafana), and K8s Security Hardening.
 
 ---
@@ -37,7 +38,7 @@ The platform orchestrates a multi-stage lifecycle across distributed infrastruct
 | **Orchestration** | Jenkins (Declarative Pipeline) |
 | **Language/Framework** | Java 17, Spring Boot |
 | **Build/Dependency** | Apache Maven 3 |
-| **Security Scanning** | Aqua Security Trivy (FS & Container) |
+| **Security Scanning** | Trivy (FS & Container) |
 | **Code Quality** | SonarQube, Quality Gate Integration |
 | **Containerization** | Docker Engine |
 | **Registries** | AWS Elastic Container Registry (ECR), DockerHub |
@@ -45,12 +46,11 @@ The platform orchestrates a multi-stage lifecycle across distributed infrastruct
 | **Infrastructure** | Kubernetes (MicroK8s), AWS EC2 |
 
 ---
-## 🏗️ Pipeline Architecture & Evidence
-The platform orchestrates a multi-stage lifecycle across distributed infrastructure.# 🏛️ Enterprise TaskMaster Platform
+##  Devops Taskmater-App
 <p align="center">
   <img src="./docs/assets/app-demo.gif" width="700" alt="Live Application Demo">
   <br>
-  <strong>Status:</strong> <code>Production-Ready</code> | <strong>Traffic:</strong> <code>Live on Port 80</code>
+  <strong>Status:</strong> <code>Active</code> | <strong>Traffic:</strong> <code>Live on Port 30001</code>
 </p>
 
 ---
@@ -64,10 +64,10 @@ The pipeline enforces a **zero-tolerance policy** for CRITICAL vulnerabilities.
 | *Deep Code Inspection* | *Container Vulnerability Report* |
 
 ### 2. Artifact Governance & Distribution
-We implement a multi-registry strategy to ensure artifact provenance and redundancy.
+I implemented a multi-registry strategy to ensure artifact provenance and redundancy.
 
 <details>
-  <summary>📦 <b>Click to view Registry & Storage Evidence (Nexus/ECR/DockerHub)</b></summary>
+  <summary> <b>Click to view Registry & Storage Evidence (Nexus/ECR/DockerHub)</b></summary>
 
   #### **Sonatype Nexus (Binary Storage)**
   > Provenance of the compiled `.jar` artifact.
@@ -86,45 +86,6 @@ The final stage performs a rolling update to the cluster, verified by runtime lo
 | :---: | :---: |
 | <img src="./docs/assets/jenkins-run.png" width="380"> | <img src="./docs/assets/kubectl-output.png" width="380"> |
 | *100% Success Rate* | *`kubectl get pods` - Healthy/Running* |
-
----
-
-
-##  Prerequisites & Infrastructure
-
-### 1. Server Configuration (AWS EC2 / Ubuntu)
-* **Jenkins Server:** Minimum **4GB RAM** (Instance type `t3.medium` recommended).
-* **Kubernetes Cluster:** MicroK8s installed on Ubuntu.
-
-### 2. Networking & Security Groups
-Ensure the following ports are open in your AWS Security Group to allow traffic:
-
-| Port | Service | Purpose |
-| :--- | :--- | :--- |
-| **8080** | Jenkins | Web UI Access |
-| **8081** | Sonatype Nexus | Artifactory Storage |
-| **9000** | SonarQube | Code Quality Dashboard |
-| **16443** | Kubernetes | API Server (Remote Access) |
-| **30001** | Application | Frontend/App Access via NodePort |
-
-### 3. Node Dependencies
-The Jenkins user must have permissions to execute the following tools. Run these commands on your Jenkins node:
-
-* **Docker:** `sudo usermod -aG docker jenkins`
-* **kubectl:** Installed and configured for cluster communication.
-* **Trivy:** Latest version installed for vulnerability scanning.
-
-##  Jenkins Credential Configuration
-
-Configure the following IDs exactly as listed in **Manage Jenkins > Credentials** to ensure pipeline compatibility:
-
-| Credential ID | Type | Description |
-| :--- | :--- | :--- |
-| `github-creds` | Username/Password | GitHub credentials or Personal Access Token (PAT). |
-| `docker-cred` | Username/Password | Docker Hub credentials (**User: jonathan661**). |
-| `sonar-token` | Secret Text | Auth token generated in SonarQube settings. |
-| `k8-cred` | Secret File | A clean `kubeconfig` file (see setup below). |
-> **Note:** Ensure it contains `insecure-skip-tls-verify: true` and the **Public IP** of your cluster.
 
 
 ---
@@ -154,8 +115,46 @@ Configure the following IDs exactly as listed in **Manage Jenkins > Credentials*
 ```
 
 ---
+## Deployment Guide
 
-## Critical Configurations
+Follow these steps to replicate this enterprise DevSecOps deployment on your own infrastructure.
+
+##  Prerequisites & Infrastructure
+
+### 1. Server Configuration (AWS EC2 / Ubuntu)
+* **Jenkins Server:** Minimum **4GB RAM** (Instance type `t3.medium` recommended).
+* **Kubernetes Cluster:** MicroK8s installed on Ubuntu.
+
+### 2. Networking & Security Groups
+Ensure the following ports are open in your AWS Security Group to allow traffic:
+
+| Port | Service | Purpose |
+| :--- | :--- | :--- |
+| **8080** | Jenkins | Web UI Access |
+| **8081** | Sonatype Nexus | Artifactory Storage |
+| **9000** | SonarQube | Code Quality Dashboard |
+| **16443** | Kubernetes | API Server (Remote Access) |
+| **30001** | Application | Frontend/App Access via NodePort |
+
+### 3. Node Dependencies
+The Jenkins user must have permissions to execute the following tools. Run these commands on your Jenkins node:
+
+* **Docker:** `sudo usermod -aG docker jenkins`
+* **kubectl:** Installed and configured for cluster communication.
+* **Trivy:** Latest version installed for vulnerability scanning.## Critical Configurations
+
+
+##  Jenkins Credential Configuration
+
+Configure the following IDs exactly as listed in **Manage Jenkins > Credentials** to ensure pipeline compatibility:
+
+| Credential ID | Type | Description |
+| :--- | :--- | :--- |
+| `github-creds` | Username/Password | GitHub credentials or Personal Access Token (PAT). |
+| `docker-cred` | Username/Password | Docker Hub credentials (**User: jonathan661**). |
+| `sonar-token` | Secret Text | Auth token generated in SonarQube settings. |
+| `k8-cred` | Secret File | A clean `kubeconfig` file (see setup below). |
+> **Note:** Ensure it contains `insecure-skip-tls-verify: true` and the **Public IP** of your cluster.
 
 ### Kubernetes kubeconfig Setup (`k8-cred`)
 To prevent TLS handshake errors or formatting issues (e.g., `x509: certificate is valid for 127.0.0.1`), use the following structure for your secret file. 
@@ -183,56 +182,22 @@ users:
   user:
     token: <YOUR-AUTH-TOKEN>
 ```
-
----
-## Deployment Guide
-
-Follow these steps to replicate this enterprise DevSecOps deployment on your own infrastructure.
-
 ---
 
-### I. Infrastructure Requirements
-
-* **Host OS:** Ubuntu 22.04 LTS (AWS EC2 or local VM).
-* **K8s Distribution:** MicroK8s (Required addons: `dns`, `dashboard`, `storage`).
-* **Networking:** Ensure your Cloud Security Group allows the following inbound traffic:
-
-| Port | Service | Description |
-| :--- | :--- | :--- |
-| **16443** | Kubernetes API | Remote cluster management |
-| **30001** | Application | External access to the deployed app |
-| **8080** | Jenkins | Automation server UI |
-| **9000** | SonarQube | Code quality analysis UI |
-
----
-
-### II. Jenkins Credential Setup
-
-To match the environment defined in the `Jenkinsfile`, you **must** configure these credentials in Jenkins:
-
-1.  **`k8-cred`** (Secret File): Your `kubeconfig` file. 
-    > **Note:** Ensure it contains `insecure-skip-tls-verify: true` and the **Public IP** of your cluster.
-2.  **`dockerhub-creds`** (Username/Password): Your Docker Hub login details.
-3.  **`github-creds`** (Username/Password): Your GitHub username and Personal Access Token (PAT).
-4.  **`aws-ecr-creds`** (AWS Credentials): Your IAM Access Key and Secret Key for ECR registry access.
-
----
-
-### III. Deployment Steps
-
-#### 1. Clone the Repository
+### . Deployment Steps
+#### I. Clone the Repository
 ```bash
 git clone [https://github.com/tambe-jonathan/java-devsecops-platform-end-to-end.git](https://github.com/tambe-jonathan/java-devsecops-platform-end-to-end.git)
 cd java-devsecops-platform-end-to-end
 ```
-### 2. Apply Manifests Manually (Optional Testing)
+### II. Apply Manifests Manually (Optional Testing)
 Before running the pipeline, you can verify your cluster connection:
 
 Bash
 ```
 kubectl apply -f infra/deployment.yaml
 ```
-### 3. Execute the Pipeline
+### III. Execute the Pipeline
 #### 1. Execute the Pipeline
 1.  Create a new **Pipeline** job in Jenkins.
 2.  Point the **Pipeline Script from SCM** to this repository.
@@ -276,5 +241,5 @@ kubectl get svc -n webapp
 
 **Developed with 🛡️ by Agbor Jonathan** *Building secure, scalable, and resilient automated systems.*
 
-[ ![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white) ](YOUR_LINKEDIN_URL)
+[ ![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white) ](linkedin.com/in/agbor)
 [ ![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white) ](YOUR_PORTFOLIO_URL)
