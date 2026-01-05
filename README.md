@@ -258,7 +258,7 @@ kubectl get svc -n webapp
 
 ---
 
-**Developed with 🛡️ by Agbor Jonathan/github.com/tambe-jonathan** *Building secure, scalable, and resilient automated systems.*
+**Developed with 🛡️ by Agbor Jonathan** *Building secure, scalable, and resilient automated systems.*
 
 [ ![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white) ](YOUR_LINKEDIN_URL)
 [ ![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white) ](YOUR_PORTFOLIO_URL)
