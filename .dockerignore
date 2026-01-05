@@ -1,0 +1,8 @@
+# .dockerignore
+target/
+.git/
+.jenkins/
+*.log
+Dockerfile
+Jenkinsfile
+.env

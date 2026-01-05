@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> DevOps Taskmaster </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding-top: 50px; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .host-badge { float: right; font-size: 0.8em; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="host-badge">Server ID: <b th:text="${hostname}"></b></span>
+        <h2 class="mb-4">DevOps TaskMaster</h2>
+
+        <form action="/add" method="post" class="input-group mb-3">
+            <input type="text" name="task" class="form-control" placeholder="Enter new task..." required>
+            <button class="btn btn-primary" type="submit">Add Task</button>
+        </form>
+
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="task : ${tasks}">
+                <span th:text="${task}"></span>
+                <form action="/delete" method="post" style="display:inline;">
+                    <input type="hidden" name="task" th:value="${task}">
+                    <button type="submit" class="btn btn-sm btn-danger">X</button>
+                </form>
+            </li>
+        </ul>
+        
+        <div th:if="${tasks.empty}" class="text-center mt-3 text-muted">
+            <small>No tasks yet. Add one to test functionality!</small>
+        </div>
+    </div>
+</body>
+</html>
